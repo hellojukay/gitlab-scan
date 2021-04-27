@@ -31,7 +31,6 @@ func init() {
 	clt = client.New(api, token)
 }
 func main() {
-	log.Println(api, token)
 	if !clt.Ping() {
 		os.Exit(1)
 	}
