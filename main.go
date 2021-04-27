@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/hellojukay/gitlab/v4/client"
 	"github.com/xlab/treeprint"
@@ -23,6 +24,9 @@ func init() {
 	if len(api) == 0 {
 		flag.PrintDefaults()
 		os.Exit(1)
+	}
+	if !strings.HasSuffix(api, "/") {
+		api = api + "/"
 	}
 	clt = client.New(api, token)
 }
