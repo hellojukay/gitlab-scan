@@ -47,7 +47,7 @@ func (c Client) Ping() bool {
 		defer res.Body.Close()
 		return true
 	} else {
-		log.Printf("%s %d", c.url, res.StatusCode)
+		log.Printf("can not auth  %s reponse with http code %d", c.url, res.StatusCode)
 	}
 	return false
 }

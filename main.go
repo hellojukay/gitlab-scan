@@ -31,8 +31,9 @@ func init() {
 	clt = client.New(api, token)
 }
 func main() {
+	log.Println(api, token)
 	if !clt.Ping() {
-		log.Fatalln("can not connect to gitlab")
+		os.Exit(1)
 	}
 	tree := buildTree(group)
 	fmt.Println(tree)
@@ -62,7 +63,7 @@ func buildTree(id int64) treeprint.Tree {
 	}
 	groups, err := clt.Subgroups(*g)
 	if err != nil {
-		log.Println("can not get subgroups")
+		log.Printf("can not get subgroups, %s", err)
 	}
 	if len(groups) == 0 {
 		return tree
