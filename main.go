@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -9,17 +10,27 @@ import (
 	"github.com/xlab/treeprint"
 )
 
-var api = os.Getenv("API")
-var clt = client.New(api, os.Getenv("TOKEN"))
+var api string
+var token string
+var clt client.Client
+var group int64
 
+func init() {
+	flag.StringVar(&api, "api", "", "gitlab api: https://gitlab.com/api/v4/")
+	flag.StringVar(&token, "token", "", "gitlab person access token")
+	flag.Int64Var(&group, "group", 1, "gitlab group id")
+	flag.Parse()
+	if len(api) == 0 {
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
+	clt = client.New(api, token)
+}
 func main() {
-
 	if !clt.Ping() {
 		log.Fatalln("can not connect to gitlab")
-	} else {
-		log.Printf("auth %s success", api)
 	}
-	tree := buildTree(5802)
+	tree := buildTree(group)
 	fmt.Println(tree)
 }
 
@@ -28,12 +39,12 @@ func buildTree(id int64) treeprint.Tree {
 	if err != nil {
 		return treeprint.New()
 	}
+	tree := treeprint.NewWithRoot(g.Name)
 	projects, err := clt.Projects(*g)
 	if err != nil {
 		log.Printf("can not get projects from %s, %s", api, err)
 		os.Exit(1)
 	}
-	tree := treeprint.New()
 	for _, project := range projects {
 		node := tree.AddBranch(project.Name)
 		branches, err := clt.Branches(project)
@@ -42,7 +53,7 @@ func buildTree(id int64) treeprint.Tree {
 			continue
 		}
 		for _, branch := range branches {
-			node.AddNode(fmt.Sprintf("%s      (%s)", branch.Name, branch.Commit.Author))
+			node.AddNode(fmt.Sprintf("%s      %s", branch.Name, branch.Commit.Author))
 		}
 	}
 	groups, err := clt.Subgroups(*g)
@@ -54,7 +65,7 @@ func buildTree(id int64) treeprint.Tree {
 	}
 	for _, group := range groups {
 		t := buildTree(group.ID)
-		tree.AddMetaBranch(t, group.Name)
+		tree.AddMetaBranch(group.Name, t)
 	}
 	return tree
 }
