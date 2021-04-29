@@ -57,7 +57,7 @@ func buildTree(id int64) treeprint.Tree {
 			continue
 		}
 		for _, branch := range branches {
-			node.AddNode(fmt.Sprintf("%s      %s", branch.Name, branch.Commit.Author))
+			node.AddNode(fmt.Sprintf("%s      %s[%s]", branch.Name, branch.Commit.Author, branch.Commit.CommittedDate.Format("2006-01-02")))
 		}
 	}
 	groups, err := clt.Subgroups(*g)
