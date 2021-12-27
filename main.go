@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/hellojukay/gitlab/v4/client"
+	"github.com/hellojukay/gitlab/gitlab-scan/v4/client"
 	"github.com/xlab/treeprint"
 )
 

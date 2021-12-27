@@ -1,4 +1,4 @@
-module github.com/hellojukay/gitlab
+module github.com/hellojukay/gitlab-scan
 
 go 1.16
 
