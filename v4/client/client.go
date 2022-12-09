@@ -11,8 +11,6 @@ import (
 	v4 "github.com/hellojukay/gitlab/v4"
 )
 
-var httpClient = http.DefaultClient
-
 type Client struct {
 	http.Client
 	token string
@@ -33,7 +31,7 @@ func (c Client) Ping() bool {
 		log.Fatalf("api scheme format error '%s' %s", c.url, err)
 	}
 	req := http.Request{
-		Method: "GET",
+		Method: http.MethodGet,
 		URL:    url,
 		Header: http.Header{},
 	}
@@ -61,7 +59,7 @@ func (c Client) Group(id int64) (*v4.Group, error) {
 		return nil, err
 	}
 	req := http.Request{
-		Method: "GET",
+		Method: http.MethodGet,
 		URL:    api,
 		Header: http.Header{},
 	}
@@ -93,7 +91,7 @@ func (c Client) Projects(g v4.Group) ([]v4.Project, error) {
 		return nil, err
 	}
 	req := http.Request{
-		Method: "GET",
+		Method: http.MethodGet,
 		URL:    api,
 		Header: http.Header{},
 	}
@@ -125,14 +123,14 @@ func (c Client) Branches(project v4.Project) ([]v4.Branch, error) {
 		return nil, err
 	}
 	req := http.Request{
-		Method: "GET",
+		Method: http.MethodGet,
 		URL:    api,
 		Header: http.Header{},
 	}
 	req.Header.Set("PRIVATE-TOKEN", c.token)
 	res, err := c.Do(&req)
 	if err != nil {
-		log.Printf("request gitlab grop detail failed, %s  %s", api, err)
+		log.Printf("request gitlab group detail failed, %s  %s", api, err)
 		return nil, err
 	}
 	defer res.Body.Close()
@@ -157,7 +155,7 @@ func (c Client) Subgroups(group v4.Group) ([]v4.Group, error) {
 		return nil, err
 	}
 	req := http.Request{
-		Method: "GET",
+		Method: http.MethodGet,
 		URL:    api,
 		Header: http.Header{},
 	}

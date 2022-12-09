@@ -11,10 +11,12 @@ import (
 	"github.com/xlab/treeprint"
 )
 
-var api string
-var token string
-var clt client.Client
-var group int64
+var (
+	api   string
+	token string
+	clt   client.Client
+	group int64
+)
 
 func init() {
 	flag.StringVar(&api, "api", "", "gitlab api: https://gitlab.com/api/v4/")
