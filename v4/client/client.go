@@ -3,12 +3,12 @@ package client
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
 
-	v4 "github.com/hellojukay/gitlab/v4"
+	v4 "github.com/hellojukay/gitlab/gitlab-scan/v4"
 )
 
 type Client struct {
@@ -70,7 +70,7 @@ func (c Client) Group(id int64) (*v4.Group, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		log.Printf("can not read any from gitlab %s, %s", api, err)
 		return nil, err
@@ -102,7 +102,7 @@ func (c Client) Projects(g v4.Group) ([]v4.Project, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		log.Printf("can not read any from gitlab %s, %s", api, err)
 		return nil, err
@@ -134,7 +134,7 @@ func (c Client) Branches(project v4.Project) ([]v4.Branch, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		log.Printf("can not read any from gitlab %s, %s", api, err)
 		return nil, err
@@ -166,7 +166,7 @@ func (c Client) Subgroups(group v4.Group) ([]v4.Group, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		log.Printf("can not read any from gitlab %s, %s", api, err)
 		return nil, err
