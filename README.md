@@ -3,7 +3,7 @@
 
 ### 安装
 ```
-go get github.com/hellojukay/gitlab/gitlab-scan@latest
+go install github.com/hellojukay/gitlab/gitlab-scan@latest
 ```
 ### 使用
 ```
